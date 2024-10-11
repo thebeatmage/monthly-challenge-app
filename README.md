@@ -47,7 +47,7 @@ The application uses a .env file to manage sensitive information like secret key
     ```
 5. Create a superuser for admin access:
 
-    '''bash
+    ```bash
     python manage.py createsuperuser
     ```
 
