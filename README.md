@@ -17,6 +17,10 @@ This is a Django-based web application for creating and tracking monthly challen
 - **Database**: PostgreSQL
 - **Deployment**: Docker for containerized deployment
 
+## Configuration
+
+The application uses a .env file to manage sensitive information like secret keys, database credentials, and allowed hosts. Ensure that you create a .env file in the project root directory with the required configuration variables.
+
 ## Installation
 
 1. Clone the repository:
@@ -24,19 +28,52 @@ This is a Django-based web application for creating and tracking monthly challen
     git clone https://github.com/yourusername/monthly-challenge-tracker.git
     cd monthly-challenge-tracker
     ```
+2. Create and activate a virtual environment:
 
-2. Build and run the Docker container:
+    ```bash
+    python -m venv env
+    source env/bin/activate  # For Windows: `env\Scripts\activate`
+    ```
+3. Install dependencies:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+ 4. Apply migrations:
+
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
+5. Create a superuser for admin access:
+
+    '''bash
+    python manage.py createsuperuser
+
+6. Run the server:
+
+    ```bash
+    python manage.py runserver
+    ```
+7. Build and run the Docker container:
+
     ```bash
     docker-compose up --build
     ```
 
-3. Access the app at `http://localhost:8000`.
+8. Access the app at `http://localhost:8000`.
 
 ## Usage
 
-- Create an account using an email address in the whitelist.
-- Log in to the dashboard to set and track your goals.
+- Logged in as Superuser, add your friends' email address to the whitelist.
+- Signup, Login, and set and track your goals!
 - Use the calendar view to visualize your progress.
+
+## Features to Come / To-Dos:
+
+- Leaderboards
+- Achievements
+- Group Goals and Challenges
 
 ## License
 
