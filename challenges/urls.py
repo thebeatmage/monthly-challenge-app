@@ -1,6 +1,6 @@
 # Import necessary modules and views
 from django.urls import path
-from .views import GoalListView, GoalCreateView, GoalUpdateView, GoalDeleteView, ChallengeListView, DailyGoalTrackerView, CalendarView
+from .views import GoalListView, GoalCreateView, GoalUpdateView, GoalDeleteView, ChallengeListView, DailyGoalTrackerView, CalendarView, LeaderboardView
 from . import views  # Import additional views from the current directory
 
 # Define the URL patterns for the application
@@ -14,6 +14,7 @@ urlpatterns = [
     path('goals/new/', GoalCreateView.as_view(), name='goal-create'),  # URL for creating new goals using GoalCreateView class-based view
     path('goals/<int:pk>/edit/', GoalUpdateView.as_view(), name='goal-edit'),  # URL for editing existing goals based on primary key (pk) using GoalUpdateView class-based view
     path('goals/<int:pk>/delete/', GoalDeleteView.as_view(), name='goal-delete'),  # URL for deleting goals based on primary key (pk) using GoalDeleteView class-based view
+    path('leaderboard/', views.LeaderboardView, name='leaderboard'), # URL for viewing the leaderboard for all users 
     path('challenges/', ChallengeListView.as_view(), name='challenge-list'),  # URL for listing user challenges using ChallengeListView class-based view
     path('daily-tracker/', DailyGoalTrackerView.as_view(), name='daily-goal-tracker'),  # URL for tracking daily goals using DailyGoalTrackerView class-based view
     path('calendar/', CalendarView.as_view(), name='calendar-view-default'),  # URL for viewing goals in a calendar format without specific year/month parameters

@@ -56,7 +56,7 @@ The application uses a .env file to manage sensitive information like secret key
     ```bash
     python manage.py runserver
     ```
-7. Build and run the Docker container:
+7. (Or) Build and run the Docker container:
 
     ```bash
     docker-compose up --build
@@ -66,13 +66,12 @@ The application uses a .env file to manage sensitive information like secret key
 
 ## Usage
 
-- Logged in as Superuser, add your friends' email address to the whitelist.
+- Log in as Superuser, add your friends' email address to the whitelist.
 - Signup, Login, and set and track your goals!
 - Use the calendar view to visualize your progress.
 
 ## Features to Come / To-Dos:
 
-- Leaderboards
 - Achievements
 - Group Goals and Challenges
 

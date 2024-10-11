@@ -1,0 +1,51 @@
+<!-- challenges/templates/challenges/leaderboard.html -->
+
+{% extends 'challenges/base.html' %}
+<!-- Extends the base template for consistent layout and styling -->
+
+{% block title %}Leaderboard{% endblock %}
+<!-- Block to set the page title in the head section -->
+
+{% block content %}
+<!-- Main content block that will be inserted into the base template -->
+
+<div class="container">
+    <h1>Monthly Leaderboard</h1>
+    <!-- Bootstrap-styled table for displaying the leaderboard -->
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <!-- Rank of the user -->
+                <th>User</th>
+                <!-- Username of the user -->
+                <th>Completion %</th>
+                <!-- Percentage of goals completed -->
+                <th>Goals Set</th>
+                <!-- Total goals set by the user -->
+                <th>Goals Completed</th>
+                <!-- Total goals completed by the user -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop over the leaderboard data and display each user's stats -->
+            {% for user_data in leaderboard_data %}
+            <tr>
+                <td>{{ user_data.rank }}</td>
+                <!-- Rank of the user based on goal completion -->
+                <td>{{ user_data.user.username }}</td>
+                <!-- Username of the user -->
+                <td>{{ user_data.completion_percentage }}%</td>
+                <!-- Percentage of goals completed for the month -->
+                <td>{{ user_data.total_goals_set }}</td>
+                <!-- Total number of goals set by the user -->
+                <td>{{ user_data.total_goals_completed }}</td>
+                <!-- Total number of goals completed by the user -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+<!-- End of the content block that will be injected into the base template -->

@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Goal, Challenge, GoalCompletion, WhitelistedEmail
 from .forms import WhitelistedEmailForm, CustomSignupForm
 from datetime import timedelta, datetime
+from django.db.models import Count, Q
+from django.contrib.auth.models import User
 import calendar
 
 # Define a decorator to restrict access to admin users only
@@ -145,6 +147,63 @@ def dashboard(request):
     }
 
     return render(request, 'challenges/dashboard.html', context)
+
+@login_required(login_url='login')
+def LeaderboardView(request):
+    """
+    View to display the leaderboard for the current month-to-date.
+    Users are ranked by the percentage of their set goals completed,
+    with a secondary sort by the total number of goals completed.
+    """
+    
+    # Get the current date
+    today = now().date()
+
+    # Get the start of the current month by setting the day to 1
+    start_of_month = today.replace(day=1)
+
+    # Annotate users with counts for set goals and completed goals for the current month
+    users = User.objects.annotate(
+        total_goals_set=Count(
+            'goal__goalcompletion',  # Count the number of goal completions related to each user's goals
+            filter=Q(goal__goalcompletion__date__gte=start_of_month)  # Filter goal completions for the current month
+        ),
+        total_goals_completed=Count(
+            'goal__goalcompletion',  # Count the number of completed goals
+            filter=Q(goal__goalcompletion__date__gte=start_of_month, goal__goalcompletion__completed=True)  # Filter completed goals for the current month
+        )
+    ).filter(total_goals_set__gt=0)  # Filter out users with no goals set
+
+    # Prepare the leaderboard data by calculating the completion percentage for each user
+    leaderboard_data = []
+    for user in users:
+        if user.total_goals_set > 0:
+            # Calculate the completion percentage
+            completion_percentage = (user.total_goals_completed / user.total_goals_set) * 100
+        else:
+            completion_percentage = 0  # If no goals are set, the percentage is 0
+        # Append each user's data to the leaderboard
+        leaderboard_data.append({
+            'user': user,
+            'completion_percentage': round(completion_percentage, 1),  # Round the percentage to one decimal place
+            'total_goals_set': user.total_goals_set,  # Total goals set for the month
+            'total_goals_completed': user.total_goals_completed  # Total goals completed for the month
+        })
+
+    # Sort the leaderboard primarily by completion percentage (descending), and secondarily by total goals completed (descending)
+    leaderboard_data.sort(key=lambda x: (-x['completion_percentage'], -x['total_goals_completed']))
+
+    # Assign ranking numbers to each user in the sorted leaderboard
+    for index, user_data in enumerate(leaderboard_data, start=1):
+        user_data['rank'] = index
+
+    # Create the context with leaderboard data
+    context = {
+        'leaderboard_data': leaderboard_data,
+    }
+
+    # Render the leaderboard template and pass the context
+    return render(request, 'challenges/leaderboard.html', context)
 
 # List view of all user goals, using a class-based view pattern
 @method_decorator(login_required(login_url='login'), name='dispatch')

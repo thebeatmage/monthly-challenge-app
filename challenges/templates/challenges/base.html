@@ -118,6 +118,7 @@
         {% if user.is_authenticated %}
             <!-- Links available to logged-in users -->
             <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a>
             <a href="{% url 'daily-goal-tracker' %}" class="nav-link">Daily Tracker</a>
             <a href="{% url 'goal-list' %}" class="nav-link">Daily Goals</a>
             <a href="{% url 'calendar-view' year=today.year month=today.month %}" class="nav-link">Calendar</a>
