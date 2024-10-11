@@ -1,0 +1,67 @@
+<!-- challenges/templates/challenges/calendar_view.html -->
+
+<!-- Extend from the base template to include common layout and styles -->
+{% extends 'challenges/base.html' %}
+
+<!-- Set the title of the page -->
+{% block title %}Calendar View{% endblock %}
+
+<!-- Content block to hold the calendar view -->
+{% block content %}
+<div class="container">
+    <!-- Display the current month and year at the top of the page -->
+    <h1>{{ month_name }} {{ year }} - Goal Calendar</h1>
+
+    <!-- Calendar table with dark theme and bordered cells -->
+    <table class="calendar-table table-bordered table-dark">
+        <thead>
+            <!-- Table header for days of the week -->
+            <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Iterate through each day in the month_data to populate the calendar -->
+                {% for day in month_data %}
+                    {% if day.day is None %}
+                        <!-- Empty cell for padding days at the start or end of the month -->
+                        <td></td>
+                    {% else %}
+                        <!-- Display the day number and goals for each non-padding day -->
+                        <td class="{% if day.day == today.day and today.month == month and today.year == year %}today{% endif %}">
+                            <strong>{{ day.day }}</strong><br>
+                            <!-- Loop through each goal for the day and display its status -->
+                            {% for goal_info in day.goals %}
+                                <!-- Apply a different style based on whether the goal is completed or not -->
+                                <div class="{% if goal_info.completed %}completed{% else %}not-completed{% endif %}">
+                                    {{ goal_info.goal.name }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                    {% endif %}
+                    
+                    <!-- Start a new table row every 7 cells (each week has 7 days) -->
+                    {% if forloop.counter|divisibleby:7 %}
+                        </tr><tr>  <!-- Close the current row and start a new one -->
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Navigation links to switch between previous and next months -->
+    <a href="{% url 'calendar-view' year=prev_year month=prev_month %}" class="btn btn-outline-primary">Previous Month</a>
+    <a href="{% url 'calendar-view' year=next_year month=next_month %}" class="btn btn-outline-primary">Next Month</a>
+    <br>
+
+    <!-- Link to navigate back to the dashboard -->
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

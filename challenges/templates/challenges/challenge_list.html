@@ -1,0 +1,24 @@
+<!-- challenges/templates/challenges/challenge_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Set the title of the page to "Your Challenges" -->
+    <title>Your Challenges</title>
+</head>
+<body>
+    <!-- Main header for the challenges list page -->
+    <h1>Your Challenges</h1>
+
+    <!-- Unordered list to display each challenge for the logged-in user -->
+    <ul>
+        <!-- Loop through each challenge in the "challenges" context variable -->
+        {% for challenge in challenges %}
+            <!-- Display the challenge name along with its start and end dates -->
+            <li>{{ challenge }} ({{ challenge.start_date }} - {{ challenge.end_date }})</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Link to navigate back to the dashboard -->
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

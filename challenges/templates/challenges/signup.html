@@ -1,0 +1,23 @@
+<!-- challenges/templates/challenges/signup.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template for consistent layout and styling -->
+
+{% block title %}Sign Up{% endblock %} <!-- Set the page title to "Sign Up" -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Sign Up</h1>
+
+    <!-- Signup Form -->
+    <form method="POST"> <!-- Use POST method to submit the signup form data -->
+        {% csrf_token %} <!-- Include CSRF token for security against cross-site request forgery -->
+        
+        <!-- Render the Signup Form -->
+        {{ form.as_p }} <!-- Render the form fields in a paragraph format -->
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Sign Up</button> <!-- Button to submit the form -->
+    </form>
+</div>
+{% endblock %}

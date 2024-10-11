@@ -1,0 +1,55 @@
+<!-- challenges/templates/challenges/manage_whitelisted_emails.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template for consistent layout and styling -->
+
+{% block title %}Manage Whitelisted Emails{% endblock %} <!-- Set the page title to "Manage Whitelisted Emails" -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Manage Whitelisted Emails</h1>
+    
+    <!-- Form for Adding or Updating Whitelisted Emails -->
+    <form method="POST"> <!-- Use POST method for adding/updating whitelisted emails -->
+        {% csrf_token %} <!-- Include CSRF token for security against cross-site request forgery -->
+        
+        <!-- Email Input Field -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required> <!-- Email input field -->
+        </div>
+
+        <!-- Active Checkbox Field -->
+        <div class="form-group">
+            <label for="active">Active</label>
+            <input type="checkbox" id="active" name="active" checked> <!-- Checkbox to indicate whether the email is active -->
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Add/Update Email</button> <!-- Button to submit the form -->
+    </form>
+
+    <!-- Separator Line -->
+    <hr>
+
+    <!-- Table of Existing Whitelisted Emails -->
+    <h2>Existing Whitelisted Emails</h2>
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Email</th> <!-- Column header for email address -->
+                <th>Active</th> <!-- Column header for active status -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %} <!-- Loop through the list of whitelisted emails -->
+            <tr>
+                <!-- Display Email and Active Status for Each Whitelisted Email -->
+                <td>{{ email.email }}</td> <!-- Display the email address -->
+                <td>{{ email.active }}</td> <!-- Display whether the email is active or not -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+<!-- challenges/templates/challenges/dashboard.html -->
+{% extends 'challenges/base.html' %} <!-- Extend the base template for a consistent layout and styling -->
+
+{% block title %}Dashboard{% endblock %} <!-- Set the title for the page -->
+
+{% block content %}
+<div class="container">
+    <!-- Top Summary Cards for Monthly and Weekly Goal Completion -->
+    <div class="row mb-4">
+        <!-- Monthly Goal Completion Card -->
+        <div class="col-md-6">
+            <div class="card text-white bg-dark">
+                <div class="card-body">
+                    <h3 class="card-title">Monthly Goal Completion</h3> <!-- Card Title -->
+                    <!-- Display the monthly completion percentage as a large number -->
+                    <p class="card-text display-4">{{ monthly_completion_percentage }}%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Goal Completion Card -->
+        <div class="col-md-6">
+            <div class="card text-white bg-dark">
+                <div class="card-body">
+                    <h3 class="card-title">Weekly Goal Completion</h3> <!-- Card Title -->
+                    <!-- Display the weekly completion percentage as a large number -->
+                    <p class="card-text display-4">{{ weekly_completion_percentage }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual Goal Performance Table -->
+    <div class="card bg-dark text-white">
+        <div class="card-body">
+            <h3 class="card-title">Individual Goal Performance</h3> <!-- Section Title -->
+            <!-- Table to show the month-to-date (MTD) and week-to-date (WTD) statistics for each goal -->
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Goal</th> <!-- Goal Name -->
+                        <th>MTD Completion %</th> <!-- Month-to-Date Completion Percentage -->
+                        <th>MTD Days Set</th> <!-- Number of Days the Goal was Set for the Month-to-Date -->
+                        <th>MTD Days Completed</th> <!-- Number of Days the Goal was Completed for the Month-to-Date -->
+                        <th>WTD Completion %</th> <!-- Week-to-Date Completion Percentage -->
+                        <th>WTD Days Set</th> <!-- Number of Days the Goal was Set for the Week-to-Date -->
+                        <th>WTD Days Completed</th> <!-- Number of Days the Goal was Completed for the Week-to-Date -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through the goal statistics passed in the context -->
+                    {% for stat in goal_stats %}
+                    <tr>
+                        <!-- Display the statistics for each goal -->
+                        <td>{{ stat.goal_name }}</td> <!-- Goal Name -->
+                        <td>{{ stat.month_to_date_percentage }}%</td> <!-- Month-to-Date Completion Percentage -->
+                        <td>{{ stat.month_to_date_days_set }}</td> <!-- Month-to-Date Days Set -->
+                        <td>{{ stat.month_to_date_days_completed }}</td> <!-- Month-to-Date Days Completed -->
+                        <td>{{ stat.week_to_date_percentage }}%</td> <!-- Week-to-Date Completion Percentage -->
+                        <td>{{ stat.week_to_date_days_set }}</td> <!-- Week-to-Date Days Set -->
+                        <td>{{ stat.week_to_date_days_completed }}</td> <!-- Week-to-Date Days Completed -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

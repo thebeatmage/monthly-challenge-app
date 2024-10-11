@@ -1,0 +1,59 @@
+<!-- challenges/templates/challenges/goal_list.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template to maintain a consistent layout and style -->
+
+{% block title %}Goals{% endblock %} <!-- Set the page title to "Goals" -->
+
+{% block content %}
+    <!-- Page Header -->
+    <h1>Your Goals</h1>
+
+    <!-- Goals Table -->
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Goal Name</th> <!-- Column header for goal name -->
+                <th>Description</th> <!-- Column header for goal description -->
+                <th>Days</th> <!-- Column header for days of the week the goal is scheduled -->
+                <th>Actions</th> <!-- Column header for actions (edit/delete) -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for goal in goals %} <!-- Loop through each goal in the context variable "goals" -->
+            <tr>
+                <!-- Display the name and description of the goal -->
+                <td>{{ goal.name }}</td>
+                <td>{{ goal.description }}</td>
+                
+                <!-- Display the days of the week for the goal, if applicable -->
+                <td>
+                    {% if goal.monday %} Mon {% endif %}
+                    {% if goal.tuesday %} Tue {% endif %}
+                    {% if goal.wednesday %} Wed {% endif %}
+                    {% if goal.thursday %} Thu {% endif %}
+                    {% if goal.friday %} Fri {% endif %}
+                    {% if goal.saturday %} Sat {% endif %}
+                    {% if goal.sunday %} Sun {% endif %}
+                </td>
+
+                <!-- Action buttons for editing and deleting goals -->
+                <td>
+                    <!-- Edit button navigates to the goal edit view -->
+                    <a href="{% url 'goal-edit' goal.pk %}" class="btn btn-outline-primary">Edit</a>
+                    
+                    <!-- Delete button: Form submission to delete the goal -->
+                    <form method="POST" action="{% url 'goal-delete' goal.pk %}" style="display:inline;">
+                        {% csrf_token %} <!-- Include CSRF token for security -->
+                        
+                        <!-- Confirmation message before deleting the goal -->
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this goal?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %} <!-- End of the loop for each goal -->
+        </tbody>
+    </table>
+
+    <!-- Button to create a new goal, redirects to the goal creation page -->
+    <a href="{% url 'goal-create' %}" class="btn btn-success">Create New Goal</a>
+{% endblock %}

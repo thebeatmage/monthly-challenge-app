@@ -1,0 +1,25 @@
+<!-- challenges/templates/challenges/goal_confirm_delete.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template for consistent layout and styling -->
+
+{% block title %}Delete Goal{% endblock %} <!-- Set the title for the page -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Delete Goal</h1>
+    <!-- Confirmation message displaying the name of the goal to be deleted -->
+    <p>Are you sure you want to delete the goal "{{ object.name }}"?</p>
+    
+    <!-- Form to submit the goal deletion request -->
+    <form method="POST">
+        {% csrf_token %} <!-- CSRF token for form security -->
+        
+        <!-- Delete button to confirm deletion -->
+        <button type="submit" class="btn btn-danger">Delete</button>
+        
+        <!-- Link to cancel and navigate back to the goal list without deleting -->
+        <a href="{% url 'goal-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

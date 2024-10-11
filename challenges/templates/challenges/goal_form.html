@@ -1,0 +1,26 @@
+<!-- challenges/templates/challenges/goal_form.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template to maintain a consistent layout and style across the app -->
+
+{% block title %}Edit Goal{% endblock %} <!-- Set the title for the goal form page -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Edit Goal</h1>
+    
+    <!-- Form to edit or create a new goal -->
+    <form method="POST">
+        {% csrf_token %} <!-- Include CSRF token for security to prevent cross-site request forgery -->
+        
+        <!-- Render the form fields dynamically as paragraph elements -->
+        {{ form.as_p }}
+        
+        <!-- Button to submit the form and save changes to the goal -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        
+        <!-- Link to navigate back to the goal list without saving changes -->
+        <a href="{% url 'goal-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

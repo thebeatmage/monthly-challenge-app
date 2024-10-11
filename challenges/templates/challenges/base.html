@@ -1,0 +1,155 @@
+<!-- challenges/templates/challenges/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Challenge Tracker{% endblock %}</title>
+    
+    <!-- Bootstrap CSS for styling and responsive layout -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Custom CSS for the application -->
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* Light text */
+            font-family: Arial, sans-serif; /* Set default font */
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #1e1e1e; /* Sidebar background color */
+            padding: 20px;
+            transition: all 0.3s; /* Smooth transition for sidebar */
+        }
+        .sidebar a {
+            display: block;
+            color: #8fbc8f; /* Neon green link color */
+            margin: 10px 0;
+            text-decoration: none; /* Remove underline from links */
+            font-weight: bold; /* Bold links */
+        }
+        .sidebar a:hover {
+            color: #20c997; /* Teal color on hover */
+        }
+        .sidebar .active {
+            background-color: #343a40; /* Dark background for active links */
+            border-left: 4px solid #6a0dad; /* Neon purple accent on the left */
+        }
+        .sidebar .nav-link.active {
+            color: #6a0dad; /* Neon purple for active link text */
+        }
+
+        /* Content Area Styling */
+        .content {
+            margin-left: 260px; /* Ensure content is pushed to the right of the sidebar */
+            padding: 20px;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #282828; /* Dark navbar background */
+            border-bottom: 2px solid #6a0dad; /* Neon purple border at the bottom */
+        }
+        .navbar .navbar-brand {
+            color: #ffffff; /* White text for navbar brand */
+        }
+        .navbar .navbar-brand:hover {
+            color: #20c997; /* Teal text color on hover */
+        }
+
+        /* Goal Status Styling */
+        .completed {
+            background-color: #4caf50; /* Green background for completed goals */
+            color: #ffffff; /* White text */
+            padding: 5px;
+            border-radius: 4px; /* Rounded corners */
+            margin: 5px 0;
+            font-size: 12px; /* Smaller font size */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Ellipsis for overflowed text */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        .not-completed {
+            background-color: #706f6f; /* Grey background for not completed goals */
+            color: #ffffff; /* White text */
+            padding: 5px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .today {
+            border: 2px solid #20c997; /* Teal border for today's date */
+        }
+
+        /* Calendar Table Styling */
+        table.calendar-table {
+            table-layout: fixed; /* Fixed layout to maintain equal cell size */
+            width: 100%; /* Full width table */
+        }
+        table.calendar-table td {
+            width: 14%; /* Each day cell takes up equal width (100% / 7 days) */
+            height: 100px; /* Fixed height for each cell */
+            vertical-align: top; /* Align content to the top */
+            overflow: hidden; /* Prevent cell from expanding */
+        }
+        table.calendar-table td div {
+            font-size: 12px; /* Smaller font size for calendar text */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Ellipsis for overflowed text */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h2>Monthly Challenge!</h2>
+        {% if user.is_authenticated %}
+            <!-- Links available to logged-in users -->
+            <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'daily-goal-tracker' %}" class="nav-link">Daily Tracker</a>
+            <a href="{% url 'goal-list' %}" class="nav-link">Daily Goals</a>
+            <a href="{% url 'calendar-view' year=today.year month=today.month %}" class="nav-link">Calendar</a>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+        {% else %}
+            <!-- Links available to unauthenticated users -->
+            <a href="{% url 'login' %}" class="nav-link">Login</a>
+            <a href="{% url 'signup' %}" class="nav-link">Sign Up</a>
+        {% endif %}
+    
+        {% if user.is_superuser %}
+            <!-- Link visible only to superuser/admin for managing whitelist -->
+            <a href="{% url 'manage-whitelisted-emails' %}" class="nav-link">Manage Whitelisted Emails</a>
+        {% endif %}
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <!-- Navbar at the top of the content area -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">Let's Grow Together: Monthly Challenge</a>
+        </nav>
+        <div class="container">
+            {% block content %}
+            <!-- Content from child templates will be rendered here -->
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

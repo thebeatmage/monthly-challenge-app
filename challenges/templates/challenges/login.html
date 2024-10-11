@@ -1,0 +1,39 @@
+<!-- challenges/templates/challenges/login.html -->
+
+{% extends 'challenges/base.html' %} <!-- Extend the base template for consistent layout and styling -->
+
+{% block title %}Login{% endblock %} <!-- Set the page title to "Login" -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Login</h1>
+
+    <!-- Login Form -->
+    <form method="POST"> <!-- Use POST method for security when submitting credentials -->
+        {% csrf_token %} <!-- Include CSRF token for security against cross-site request forgery -->
+        
+        <!-- Username Input Field -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" required> <!-- Text input for username -->
+        </div>
+        
+        <!-- Password Input Field -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" required> <!-- Password input for added security -->
+        </div>
+        
+        <!-- Error Message Display -->
+        {% if error %} <!-- Check if there is an error message to display (e.g., invalid login) -->
+        <div class="alert alert-danger">
+            {{ error }} <!-- Display the error message passed from the view -->
+        </div>
+        {% endif %}
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Login</button> <!-- Button to submit the login form -->
+    </form>
+</div>
+{% endblock %}

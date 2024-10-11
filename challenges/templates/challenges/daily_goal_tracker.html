@@ -1,0 +1,56 @@
+<!-- challenges/templates/challenges/daily_goal_tracker.html -->
+{% extends 'challenges/base.html' %} <!-- Extend from the base template for consistent layout -->
+
+{% block title %}Daily Goal Tracker{% endblock %} <!-- Set the title for the page -->
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <h1>Daily Goal Tracker</h1>
+    
+    <!-- Date Picker Form to Select a Date -->
+    <form method="GET" action="{% url 'daily-goal-tracker' %}" class="mb-4">
+        <div class="form-group">
+            <label for="datePicker">Select Date:</label>
+            <!-- Input field to select the date, pre-filled with the selected date from the context -->
+            <input type="date" id="datePicker" name="date" class="form-control" value="{{ selected_date|date:'Y-m-d' }}">
+        </div>
+        <!-- Submit button to reload the page with the selected date -->
+        <button type="submit" class="btn btn-primary">Go</button>
+    </form>
+
+    <!-- Goal Completion Form for the Selected Date -->
+    <form method="POST" action="{% url 'daily-goal-tracker' %}">
+        {% csrf_token %} <!-- Include CSRF token for security -->
+        
+        <!-- Hidden input to pass the selected date with the POST request -->
+        <input type="hidden" name="selected_date" value="{{ selected_date }}">
+        
+        <!-- Table to display goals and their status -->
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Goal</th> <!-- Table header for the goal name -->
+                    <th>Status</th> <!-- Table header for the goal completion status -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through each goal and display its details in a table row -->
+                {% for goal in goals %}
+                <tr>
+                    <td>{{ goal.name }}</td> <!-- Display the name of the goal -->
+                    <td>
+                        <!-- Checkbox to indicate whether the goal is completed or not -->
+                        <!-- The goal_status_map dictionary is used to check if the goal is completed for the selected date -->
+                        <input type="checkbox" name="goal_{{ goal.id }}" {% if goal_status_map.goal.id %} checked{% endif %}>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Submit button to update the goals' completion status -->
+        <button type="submit" class="btn btn-success">Update Goals</button>
+    </form>
+</div>
+{% endblock %}
