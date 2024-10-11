@@ -49,6 +49,7 @@ The application uses a .env file to manage sensitive information like secret key
 
     '''bash
     python manage.py createsuperuser
+    ```
 
 6. Run the server:
 
